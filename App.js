@@ -22,6 +22,7 @@ import {FONTS} from './constants/Fonts';
 import * as Progress from 'react-native-progress';
 
 const App = () => {
+  /////////// Louder
   const [louderIsEnded, setLouderIsEnded] = useState(false);
   const [prog, setProg] = React.useState(0);
   const [indeterminate, setIndeterminate] = React.useState(true);

@@ -1,16 +1,67 @@
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, View, Image, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
 import Layaut from '../../components/Layaut';
 import {COLORS} from '../../constants/Colors';
 import {FONTS} from '../../constants/Fonts';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Dimensions} from 'react-native';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 import BtnBack from '../../components/BtnBack';
+import OperationBtn from '../../components/OperationBtn';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = ({navigation}) => {
   const [selectAvatar, setSelectAvatar] = useState(null);
+  const [prevName, setPrevName] = useState('');
+  const [name, setName] = useState('');
+  console.log('prevName==>', prevName);
+  console.log('Name==>', name);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    setData();
+  }, [selectAvatar, name]);
+
+  const setData = async () => {
+    try {
+      const data = {
+        selectAvatar,
+        name,
+      };
+
+      const jsonData = JSON.stringify(data);
+      await AsyncStorage.setItem(`ProfileScreen`, jsonData);
+      console.log('Дані збережено в AsyncStorage');
+    } catch (e) {
+      console.log('Помилка збереження даних:', e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`ProfileScreen`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setName(parsedData.name);
+        setSelectAvatar(parsedData.selectAvatar);
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
 
   const SelectAvatarPicer = () => {
     let options = {
@@ -28,10 +79,30 @@ const ProfileScreen = ({navigation}) => {
       }
     });
   };
+
+  const SaveName = () => {
+    if (prevName === '') {
+      alert('Please enter your name...');
+      return;
+    }
+    setName(prevName);
+    setPrevName('');
+  };
+
+  const ResetData = () => {
+    setSelectAvatar(null);
+    setName('');
+  };
+
+  const goBack = () => {
+    navigation.goBack();
+  };
   return (
     <Layaut>
       <View style={styles.conteiner}>
         <Text style={styles.subtitle}>Avatar</Text>
+
+        {/**Avatar */}
         <TouchableOpacity
           onPress={() => {
             SelectAvatarPicer();
@@ -51,7 +122,39 @@ const ProfileScreen = ({navigation}) => {
           )}
         </TouchableOpacity>
 
-        <BtnBack navigation={navigation} />
+        {!name ? (
+          <View style={{alignItems: 'center'}}>
+            <TextInput
+              placeholder="Nickname..."
+              placeholderTextColor="rgba(255, 215, 0, 0.5)"
+              style={styles.TextInputStyles}
+              onChangeText={setPrevName}
+              value={prevName}
+            />
+
+            <OperationBtn foo={SaveName} title="Save" />
+          </View>
+        ) : (
+          <View style={styles.nameConteiner}>
+            <Text style={{...styles.subtitle, fontSize: 35}}>Name:</Text>
+            <Text style={styles.name}>{name}</Text>
+          </View>
+        )}
+        {selectAvatar || name ? (
+          <OperationBtn
+            foo={ResetData}
+            title="Reset"
+            castomeStyles={{position: 'absolute', bottom: 5, left: 5}}
+          />
+        ) : (
+          <></>
+        )}
+
+        <OperationBtn
+          foo={goBack}
+          title="Back"
+          castomeStyles={{position: 'absolute', bottom: 5, right: 5}}
+        />
       </View>
     </Layaut>
   );
@@ -76,6 +179,54 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primaryText,
     borderWidth: 3,
   },
+  nameConteiner: {
+    width: windowWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+  },
+  name: {
+    color: COLORS.primaryText,
+    fontFamily: FONTS.primary,
+    fontSize: 60,
+  },
+  TextInputStyles: {
+    height: 60,
+    width: windowWidth * 0.9,
+    margin: 12,
+    padding: 10,
+    borderWidth: 3,
+    borderColor: COLORS.primaryText,
+    borderRadius: 50,
+    backgroundColor: COLORS.primary,
+    color: COLORS.primaryText,
+    fontSize: 30,
+    fontFamily: 'Starnberg',
+  },
+  btn: {
+    borderWidth: 3,
+    borderColor: COLORS.primaryText,
+    height: 60,
+    width: 120,
+    borderRadius: 50,
+    backgroundColor: COLORS.primaryTextTransparent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnReset: {
+    position: 'absolute',
+    bottom: 5,
+    left: 5,
+    borderWidth: 3,
+    borderColor: COLORS.primaryText,
+    height: 60,
+    width: 120,
+    borderRadius: 50,
+    backgroundColor: COLORS.primaryTextTransparent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnText: {color: COLORS.primary, fontFamily: FONTS.primary, fontSize: 27},
 });
 
 export default ProfileScreen;

@@ -1,5 +1,12 @@
-import React from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  TextInput,
+  Modal,
+} from 'react-native';
 import Layaut from '../../components/Layaut';
 import {COLORS} from '../../constants/Colors';
 import {FONTS} from '../../constants/Fonts';
@@ -7,8 +14,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import OperationBtn from '../../components/OperationBtn';
 
 const HomeMainMenyScreen = ({navigation}) => {
+  const [modalAboutAs, setModalAboutAs] = useState(false);
+
+  const CloseModalAboutAs = () => {
+    setModalAboutAs(false);
+  };
   return (
     <Layaut>
       <View style={styles.container}>
@@ -55,10 +68,31 @@ const HomeMainMenyScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.btns}
           onPress={() => {
-            navigation.navigate('AboutUsScreen');
+            //navigation.navigate('AboutUsScreen');
+            setModalAboutAs(true);
           }}>
           <Text style={styles.btnsText}>About us</Text>
         </TouchableOpacity>
+
+        <Modal animationType="slide" transparent={true} visible={modalAboutAs}>
+          <View style={styles.modalConteiner}>
+            <OperationBtn
+              title={
+                <MaterialCommunityIcons
+                  name="close-thick"
+                  style={{fontSize: 40}}
+                />
+              }
+              foo={CloseModalAboutAs}
+              castomeStyles={{
+                position: 'absolute',
+                top: 5,
+                right: 5,
+                paddingHorizontal: 10,
+              }}
+            />
+          </View>
+        </Modal>
       </View>
     </Layaut>
   );
@@ -91,6 +125,34 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: 20,
     fontWeight: 'bold',
+    fontFamily: FONTS.primary,
+  },
+  modalConteiner: {
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    flex: 1,
+    marginVertical: '30%',
+    marginHorizontal: '5%',
+    borderRadius: 20,
+    borderWidth: 3,
+    borderColor: COLORS.primaryText,
+    shadowColor: COLORS.primaryText,
+    shadowOffset: {width: 30, height: 10},
+    shadowRadius: 15,
+    shadowOpacity: 0.2,
+    elevation: 5,
+  },
+  TextInputStyles: {
+    height: 60,
+    width: windowWidth * 0.7,
+    marginTop: 100,
+    padding: 10,
+    borderWidth: 3,
+    borderColor: COLORS.primaryText,
+    borderRadius: 50,
+    backgroundColor: COLORS.primary,
+    color: COLORS.primaryText,
+    fontSize: 30,
     fontFamily: FONTS.primary,
   },
 });

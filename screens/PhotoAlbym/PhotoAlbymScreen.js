@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   Image,
+  ScrollView,
 } from 'react-native';
 import Layaut from '../../components/Layaut';
 import {COLORS} from '../../constants/Colors';
@@ -105,32 +106,39 @@ const PhotoAlbymScreen = ({navigation}) => {
   return (
     <Layaut>
       <View style={styles.container}>
-        <OperationBtn
-          title="Add"
-          castomeStyles={{position: 'absolute', top: 5, right: 5}}
-          foo={OpenCreateFolderModal}
-        />
-        <View style={styles.containerFolder}>
-          {folders &&
-            folders.map(folder => {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('OnePhotoAlbymScreen', {
-                      folderName: folder.name,
-                    });
-                  }}
-                  key={folder.id}
-                  style={styles.folderItem}>
-                  <Image
-                    style={styles.folderImg}
-                    source={require('../../assets/icons/folder.png')}
-                  />
-                  <Text style={styles.folderName}>{folder.name}</Text>
-                </TouchableOpacity>
-              );
-            })}
+        <View
+          style={{width: windowWidth, alignItems: 'flex-end', marginTop: 5}}>
+          <OperationBtn
+            title="Add"
+            castomeStyles={{width: 110, marginRight: 10}}
+            foo={OpenCreateFolderModal}
+          />
         </View>
+
+        <ScrollView>
+          <View style={styles.containerFolder}>
+            {folders &&
+              folders.map(folder => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('OnePhotoAlbymScreen', {
+                        folderName: folder.name,
+                      });
+                    }}
+                    key={folder.id}
+                    style={styles.folderItem}>
+                    <Image
+                      style={styles.folderImg}
+                      source={require('../../assets/icons/folder.png')}
+                    />
+                    <Text style={styles.folderName}>{folder.name}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+          </View>
+          <View style={{height: 150}}></View>
+        </ScrollView>
 
         <Modal
           animationType="slide"
@@ -208,7 +216,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.primary,
   },
   containerFolder: {
-    marginTop: 50,
+    marginTop: -20,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: COLORS.primaryText,
     height: 60,
-    //width: 120,
     paddingHorizontal: 25,
     borderRadius: 50,
     backgroundColor: COLORS.primaryTextTransparent,

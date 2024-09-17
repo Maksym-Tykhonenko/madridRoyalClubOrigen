@@ -7,6 +7,7 @@ import {
   Alert,
   Modal,
   TextInput,
+  Image,
 } from 'react-native';
 import Layaut from '../../components/Layaut';
 import {COLORS} from '../../constants/Colors';
@@ -17,19 +18,64 @@ const windowHeight = Dimensions.get('window').height;
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import OperationBtn from '../../components/OperationBtn';
 import {uid} from 'uid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PhotoAlbymScreen = () => {
+const PhotoAlbymScreen = ({navigation}) => {
   const [folders, setFolders] = useState([]);
   const [modalAddFilder, setModalAddFilder] = useState(false);
-  console.log('folders==>', folders);
+  const [dataLoaded, setDataLoaded] = useState(false); // Додаємо стан для відстеження, чи дані завантажені
   const [foldefName, setFoldefName] = useState('');
-  console.log('foldefName==>', foldefName);
+
+  console.log('folders==>', folders);
+  console.log('length==>', folders.length);
 
   useEffect(() => {
-    if (folders.length === 0) {
-      Alert.alert(`Please click 'Add' for create your first photo folder`);
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (dataLoaded) {
+      setData();
     }
   }, [folders]);
+
+  const setData = async () => {
+    try {
+      const data = {
+        folders,
+      };
+
+      const jsonData = JSON.stringify(data);
+      await AsyncStorage.setItem(`ProfileScreen`, jsonData);
+      console.log('Дані збережено в AsyncStorage');
+    } catch (e) {
+      console.log('Помилка збереження даних:', e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`ProfileScreen`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setFolders(parsedData.folders);
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    } finally {
+      setDataLoaded(true); // Вказуємо, що дані завантажено
+    }
+  };
+
+  useEffect(() => {
+    if (dataLoaded && folders.length === 0) {
+      Alert.alert(
+        'No folders found',
+        'Please click "Add" to create your first photo folder',
+      );
+    }
+  }, [folders, dataLoaded]); // Додаємо перевірку на те, чи дані завантажені
 
   const OpenCreateFolderModal = () => {
     setModalAddFilder(true);
@@ -45,8 +91,13 @@ const PhotoAlbymScreen = () => {
       id: uid(),
       name: foldefName,
     };
+    console.log('newFolder==>', newFolder);
 
-    setFolders([...folders, newFolder]);
+    if (Array.isArray(folders)) {
+      setFolders([newFolder, ...folders]);
+    } else {
+      setFolders([newFolder]);
+    }
     setFoldefName('');
     setModalAddFilder(false);
   };
@@ -59,13 +110,33 @@ const PhotoAlbymScreen = () => {
           castomeStyles={{position: 'absolute', top: 5, right: 5}}
           foo={OpenCreateFolderModal}
         />
+        <View style={styles.containerFolder}>
+          {folders &&
+            folders.map(folder => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('OnePhotoAlbymScreen', {
+                      folderName: folder.name,
+                    });
+                  }}
+                  key={folder.id}
+                  style={styles.folderItem}>
+                  <Image
+                    style={styles.folderImg}
+                    source={require('../../assets/icons/folder.png')}
+                  />
+                  <Text style={styles.folderName}>{folder.name}</Text>
+                </TouchableOpacity>
+              );
+            })}
+        </View>
 
         <Modal
           animationType="slide"
           transparent={false}
           visible={modalAddFilder}>
           <View style={styles.modalConteiner}>
-            {/**Close Btn */}
             <OperationBtn
               title={
                 <MaterialCommunityIcons
@@ -107,17 +178,13 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     marginTop: 40,
-    alignItems: 'center',
   },
   modalConteiner: {
     backgroundColor: COLORS.primary,
     alignItems: 'center',
-    //justifyContent: 'center',
     flex: 1,
     marginVertical: '50%',
     marginHorizontal: '5%',
-
-    //paddingHorizontal: 10,
     borderRadius: 20,
     borderWidth: 3,
     borderColor: COLORS.primaryText,
@@ -139,6 +206,25 @@ const styles = StyleSheet.create({
     color: COLORS.primaryText,
     fontSize: 30,
     fontFamily: FONTS.primary,
+  },
+  containerFolder: {
+    marginTop: 50,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  folderItem: {
+    width: 200,
+  },
+  folderImg: {
+    width: 200,
+    height: 200,
+  },
+  folderName: {
+    fontFamily: FONTS.primary,
+    color: COLORS.primaryText,
+    fontSize: 30,
+    marginLeft: 40,
+    marginTop: -50,
   },
 });
 

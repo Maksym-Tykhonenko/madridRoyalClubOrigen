@@ -6,6 +6,8 @@ import {
   StyleSheet,
   TextInput,
   Modal,
+  Image,
+  ScrollView,
 } from 'react-native';
 import Layaut from '../../components/Layaut';
 import {COLORS} from '../../constants/Colors';
@@ -15,6 +17,7 @@ import {Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import OperationBtn from '../../components/OperationBtn';
+import {aboutUsText} from '../../data/aboutUsText';
 
 const HomeMainMenyScreen = ({navigation}) => {
   const [modalAboutAs, setModalAboutAs] = useState(false);
@@ -76,21 +79,46 @@ const HomeMainMenyScreen = ({navigation}) => {
 
         <Modal animationType="slide" transparent={true} visible={modalAboutAs}>
           <View style={styles.modalConteiner}>
-            <OperationBtn
-              title={
-                <MaterialCommunityIcons
-                  name="close-thick"
-                  style={{fontSize: 40}}
+            <View style={styles.modalCloseBtnConteinet}>
+              <OperationBtn
+                title={
+                  <MaterialCommunityIcons
+                    name="close-thick"
+                    style={{fontSize: 40}}
+                  />
+                }
+                foo={CloseModalAboutAs}
+                castomeStyles={{
+                  paddingHorizontal: 10,
+                  marginRight: 5,
+                  marginTop: 5,
+                  marginBottom: 5,
+                }}
+              />
+            </View>
+
+            <View style={{width: windowWidth * 0.8}}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Image
+                  style={{
+                    width: windowWidth * 0.8,
+                    height: windowWidth * 0.5,
+                    borderRadius: 20,
+                    marginBottom: 10,
+                  }}
+                  source={require('../../assets/img/aboutAsImg.png')}
                 />
-              }
-              foo={CloseModalAboutAs}
-              castomeStyles={{
-                position: 'absolute',
-                top: 5,
-                right: 5,
-                paddingHorizontal: 10,
-              }}
-            />
+                <Text
+                  style={{
+                    color: COLORS.primaryText,
+                    //fontFamily: FONTS.primary,
+                    fontSize: 18,
+                  }}>
+                  {aboutUsText}
+                </Text>
+                <View style={{height: 150}}></View>
+              </ScrollView>
+            </View>
           </View>
         </Modal>
       </View>
@@ -131,8 +159,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     alignItems: 'center',
     flex: 1,
-    marginVertical: '30%',
+    //marginVertical: '30%',
     marginHorizontal: '5%',
+    marginTop: 50,
+    //height: 400,
+    width: windowWidth * 0.9,
     borderRadius: 20,
     borderWidth: 3,
     borderColor: COLORS.primaryText,
@@ -142,6 +173,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 5,
   },
+  modalCloseBtnConteinet: {alignItems: 'flex-end', width: '100%'},
   TextInputStyles: {
     height: 60,
     width: windowWidth * 0.7,

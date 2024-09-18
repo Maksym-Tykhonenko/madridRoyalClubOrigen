@@ -2,16 +2,15 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
-import Layaut from '../components/Layaut';
-import {COLORS} from '../constants/Colors';
+import ArticlScreen from '../screens/Articl/ArticlScreen';
+import OneArticlScreen from '../screens/Articl/OneArticlScreen';
 
 const ArticlRoute = () => {
   return (
-    <Layaut>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{color: COLORS.primaryText}}>ArticlRoute!!!</Text>
-      </View>
-    </Layaut>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="ArticlScreen" component={ArticlScreen} />
+      <Stack.Screen name="OneArticlScreen" component={OneArticlScreen} />
+    </Stack.Navigator>
   );
 };
 

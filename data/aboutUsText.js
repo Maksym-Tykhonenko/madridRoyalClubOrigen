@@ -1,0 +1,4 @@
+export const aboutUsText = `Welcome to the Madrid Royal Club – the epitome of elegance and luxury in the heart of Madrid. Our club was founded with the goal of bringing together people who share a love for the culture, art, and traditions of Spain’s capital. For many years, we have been creating unique opportunities for communication, growth, and the preservation of the true spirit of Spain.
+In this section, you will learn about the rich history of our club, our mission, and the values that guide us every day. From exclusive events and gatherings to private functions and special privileges for members – Madrid Royal Club offers something extraordinary for everyone. We are committed to preserving Madrid’s cultural heritage, offering you the finest traditions and the latest trends in a refined atmosphere.
+Join our community, where every step feels like part of royal history. Explore Madrid with us, uncovering new facets of this magnificent city.
+`;

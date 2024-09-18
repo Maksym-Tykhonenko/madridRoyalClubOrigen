@@ -34,7 +34,7 @@ const ArticlScreen = ({navigation}) => {
   const [longitude, setLongitude] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [newArticlesArr, setNewArticlesArr] = useState([]);
-  console.log('newArticlesArr==>', newArticlesArr);
+  //console.log('newArticlesArr==>', newArticlesArr);
 
   useEffect(() => {
     getData();

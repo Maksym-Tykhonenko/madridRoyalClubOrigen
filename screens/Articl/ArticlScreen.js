@@ -99,7 +99,7 @@ const ArticlScreen = ({navigation}) => {
       description,
       latitude,
       longitude,
-      photo,
+      image: photo,
     };
     setNewArticlesArr([...newArticlesArr, options]);
     setName('');

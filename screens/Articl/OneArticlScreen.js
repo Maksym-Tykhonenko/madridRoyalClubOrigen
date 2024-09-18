@@ -104,9 +104,15 @@ const OneArticlScreen = ({navigation, route}) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{}}>
             <Text style={styles.artName}>{name}!!!</Text>
-            <View style={styles.artImgCont}>
-              <Image style={styles.artImage} source={image} />
-            </View>
+            {image && image.length > 3 ? (
+              <View style={styles.artImgCont}>
+                <Image style={styles.artImage} source={{uri: image}} />
+              </View>
+            ) : (
+              <View style={styles.artImgCont}>
+                <Image style={styles.artImage} source={image} />
+              </View>
+            )}
 
             <Text style={styles.artTitle}>{title}</Text>
 

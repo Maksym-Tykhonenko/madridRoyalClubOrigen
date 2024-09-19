@@ -28,7 +28,7 @@ const PhotoAlbymScreen = ({navigation}) => {
   const [foldefName, setFoldefName] = useState('');
 
   console.log('folders==>', folders);
-  console.log('length==>', folders.length);
+  //console.log('length==>', folders.length);
 
   useEffect(() => {
     getData();
@@ -69,14 +69,14 @@ const PhotoAlbymScreen = ({navigation}) => {
     }
   };
 
-  useEffect(() => {
-    if (dataLoaded && folders.length === 0) {
-      Alert.alert(
-        'No folders found',
-        'Please click "Add" to create your first photo folder',
-      );
-    }
-  }, [folders, dataLoaded]); // Додаємо перевірку на те, чи дані завантажені
+  //useEffect(() => {
+  //  if (dataLoaded && folders.length === 0) {
+  //    Alert.alert(
+  //      'No folders found',
+  //      'Please click "Add" to create your first photo folder',
+  //    );
+  //  }
+  //}, [folders, dataLoaded]); // Додаємо перевірку на те, чи дані завантажені
 
   const OpenCreateFolderModal = () => {
     setModalAddFilder(true);
@@ -109,8 +109,8 @@ const PhotoAlbymScreen = ({navigation}) => {
         <View
           style={{width: windowWidth, alignItems: 'flex-end', marginTop: 5}}>
           <OperationBtn
-            title="Add"
-            castomeStyles={{width: 110, marginRight: 10}}
+            title="Add folder"
+            castomeStyles={{paddingHorizontal: 10, marginRight: 10}}
             foo={OpenCreateFolderModal}
           />
         </View>

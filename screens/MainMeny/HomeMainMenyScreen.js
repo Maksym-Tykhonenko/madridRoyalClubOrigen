@@ -63,6 +63,7 @@ const HomeMainMenyScreen = ({navigation}) => {
           style={styles.btns}
           onPress={() => {
             navigation.navigate('LeaderBoardScreen');
+            //navigation.navigate('QuizeHardLvlScreen');
           }}>
           <Text style={styles.btnsText}>Leader board</Text>
         </TouchableOpacity>

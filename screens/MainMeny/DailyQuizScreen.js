@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -7,20 +7,61 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import Layaut from '../../components/Layaut';
-import {COLORS} from '../../constants/Colors';
-import {FONTS} from '../../constants/Fonts';
-import {dailyQuizQwe} from '../../data/dailyQuizQwe';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+/////////////////
+import Layaut from '../../components/Layaut';
+import OperationBtn from '../../components/OperationBtn';
+import OperationModal from '../../components/OperationModal';
+import {COLORS} from '../../constants/Colors';
+import {FONTS} from '../../constants/Fonts';
+import {dailyQuizQwe} from '../../data/dailyQuizQwe';
 
 const DailyQuizScreen = ({navigation}) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [score, setScore] = useState(0); // Додаємо стан для збереження балів
+  console.log('score==>', score);
   const currentQuestion = dailyQuizQwe[currentQuestionIndex];
+  const [gameOverModalStatus, setGameOverModalStatus] = useState(false);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    setData();
+  }, [score]);
+
+  const setData = async () => {
+    try {
+      const data = {
+        score,
+      };
+
+      const jsonData = JSON.stringify(data);
+      await AsyncStorage.setItem(`Score`, jsonData);
+      //console.log('Дані збережено в AsyncStorage');
+    } catch (e) {
+      console.log('Помилка збереження даних:', e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`Score`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        //console.log('parsedData==>', parsedData);
+        setScore(parsedData.score);
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
 
   const handleAnswer = answerIndex => {
     // Додаємо вибрану відповідь до масиву
@@ -54,12 +95,21 @@ const DailyQuizScreen = ({navigation}) => {
           setScore(0); // Очищаємо бали після завершення
         }
       } else {
-        Alert.alert('Невірно', 'Спробуйте ще раз!');
+        //Alert.alert('Невірно', 'Спробуйте ще раз!');
+        setGameOverModalStatus(true);
         setSelectedOrder([]); // Скидаємо вибраний масив
         setSelectedAnswers([]); // Скидаємо вибраний масив відповідей
       }
     }
   };
+
+  const GoBack = () => [
+    navigation.goBack(),
+    //setCurrentQuestionIndex(0),
+    //setSelectedOrder([]),
+    //setSelectedAnswers([]),
+    //setScore(0),
+  ];
 
   return (
     <Layaut>
@@ -97,6 +147,19 @@ const DailyQuizScreen = ({navigation}) => {
         </View>
         <View style={{height: 150}}></View>
       </ScrollView>
+
+      <View style={{alignItems: 'flex-end'}}>
+        <OperationBtn
+          castomeStyles={{width: 120, marginBottom: 5, marginRight: 5}}
+          title="Back"
+          foo={GoBack}
+        />
+      </View>
+
+      <OperationModal
+        modalStatus={gameOverModalStatus}
+        supportBtnFoo={GoBack}
+      />
     </Layaut>
   );
 };

@@ -4,14 +4,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import Layaut from '../components/Layaut';
 import {COLORS} from '../constants/Colors';
+import SetingsScreen from '../screens/Setings/SetingsScreen';
 
 const SetingsRoute = () => {
   return (
-    <Layaut>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{color: COLORS.primaryText}}>SetingsRoute!!!</Text>
-      </View>
-    </Layaut>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="SetingsScreen" component={SetingsScreen} />
+    </Stack.Navigator>
   );
 };
 

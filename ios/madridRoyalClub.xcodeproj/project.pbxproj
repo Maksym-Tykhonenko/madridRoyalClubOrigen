@@ -61,7 +61,7 @@
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-madridRoyalClub-madridRoyalClubTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-madridRoyalClub-madridRoyalClubTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-madridRoyalClub.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-madridRoyalClub.debug.xcconfig"; path = "Target Support Files/Pods-madridRoyalClub/Pods-madridRoyalClub.debug.xcconfig"; sourceTree = "<group>"; };
 		446B68D7FFB39A37E5E6E0A9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = madridRoyalClub/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		4EA1BC8754584768BEF0C77D /* ProtestGuerrilla-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ProtestGuerrilla-Regular.ttf"; path = "../assets/fonts/ProtestGuerrilla-Regular.ttf"; sourceTree = "<group>"; };
+		4EA1BC8754584768BEF0C77D /* ProtestGuerrilla-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProtestGuerrilla-Regular.ttf"; path = "../assets/fonts/ProtestGuerrilla-Regular.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-madridRoyalClub.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-madridRoyalClub.release.xcconfig"; path = "Target Support Files/Pods-madridRoyalClub/Pods-madridRoyalClub.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-madridRoyalClub-madridRoyalClubTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-madridRoyalClub-madridRoyalClubTests.debug.xcconfig"; path = "Target Support Files/Pods-madridRoyalClub-madridRoyalClubTests/Pods-madridRoyalClub-madridRoyalClubTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-madridRoyalClub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-madridRoyalClub.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,7 +228,6 @@
 				4EA1BC8754584768BEF0C77D /* ProtestGuerrilla-Regular.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -570,19 +569,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LQY97X3WVN;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = madridRoyalClub/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Madrid Quiz";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.trivia-games";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MadridRoyalClub.madridRoyalClub;
 				PRODUCT_NAME = madridRoyalClub;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -597,18 +599,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LQY97X3WVN;
 				INFOPLIST_FILE = madridRoyalClub/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Madrid Quiz";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.trivia-games";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MadridRoyalClub.madridRoyalClub;
 				PRODUCT_NAME = madridRoyalClub;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -688,10 +693,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -764,10 +766,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   Image,
+  ScrollView,
 } from 'react-native';
 import {COLORS} from '../constants/Colors';
 import {FONTS} from '../constants/Fonts';
@@ -20,103 +21,109 @@ import OperationBtn from './OperationBtn';
 const ModalWin = ({modalStatus, supportBtnFoo, winBtnFoo}) => {
   return (
     <Modal animationType="slide" transparent={true} visible={modalStatus}>
-      <View style={styles.conteinerModal}>
-        {/** <Image style={styles.img} source={require('../assets/icons/win.png')} /> */}
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 30,
-            textAlign: 'center',
-            marginBottom: 15,
-          }}>
-          Congratulations! You have reached a difficult level!
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 30,
-            textAlign: 'center',
-            marginBottom: 15,
-          }}>
-          🎉 Well done! 🎉
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 20,
-            textAlign: 'center',
-            marginBottom: 15,
-          }}>
-          You have successfully completed the first 5 questions and are now
-          moving on to the Hard Level of the quiz.
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 20,
-            textAlign: 'center',
-          }}>
-          What to Expect:
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 20,
-          }}>
-          -The questions will be more challenging.
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 20,
-            marginBottom: 15,
-          }}>
-          -From now on, the coins you earn for each correct answer will be
-          doubled.
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 30,
-            textAlign: 'center',
-            marginBottom: 15,
-          }}>
-          Are you ready for the challenge?
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.primary,
-            color: COLORS.primaryText,
-            fontSize: 20,
-            textAlign: 'center',
-          }}>
-          Click "Start" to continue and test your knowledge on the next level!
-        </Text>
+      <View>
+        <ScrollView>
+          <View style={styles.conteinerModal}>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 30,
+                textAlign: 'center',
+                marginBottom: 15,
+              }}>
+              Congratulations! You have reached a difficult level!
+            </Text>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 30,
+                textAlign: 'center',
+                marginBottom: 15,
+              }}>
+              🎉 Well done! 🎉
+            </Text>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 20,
+                textAlign: 'center',
+                marginBottom: 15,
+              }}>
+              You have successfully completed the first 5 questions and are now
+              moving on to the Hard Level of the quiz.
+            </Text>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 20,
+                textAlign: 'center',
+              }}>
+              What to Expect:
+            </Text>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 20,
+              }}>
+              -The questions will be more challenging.
+            </Text>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 20,
+                marginBottom: 15,
+              }}>
+              -From now on, the coins you earn for each correct answer will be
+              doubled.
+            </Text>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 30,
+                textAlign: 'center',
+                marginBottom: 15,
+              }}>
+              Are you ready for the challenge?
+            </Text>
+            <Text
+              style={{
+                fontFamily: FONTS.primary,
+                color: COLORS.primaryText,
+                fontSize: 20,
+                textAlign: 'center',
+              }}>
+              Click "Start" to continue and test your knowledge on the next
+              level!
+            </Text>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            width: windowWidth * 0.9,
-          }}>
-          <OperationBtn
-            title="Cancel"
-            foo={supportBtnFoo}
-            castomeStyles={styles.operationBtnStyles}
-          />
-          <OperationBtn
-            title="Start"
-            foo={winBtnFoo}
-            castomeStyles={styles.operationBtnStyles}
-          />
-        </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                width: windowWidth * 0.9,
+                paddingBottom: 10,
+              }}>
+              <OperationBtn
+                title="Cancel"
+                foo={supportBtnFoo}
+                castomeStyles={styles.operationBtnStyles}
+              />
+              <OperationBtn
+                title="Start"
+                foo={winBtnFoo}
+                castomeStyles={styles.operationBtnStyles}
+              />
+            </View>
+          </View>
+          <View style={{height: 250}}></View>
+        </ScrollView>
       </View>
     </Modal>
   );

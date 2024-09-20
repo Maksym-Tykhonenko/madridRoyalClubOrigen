@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   Modal,
+  Vibration,
 } from 'react-native';
 import {Dimensions} from 'react-native';
 import Layaut from '../../components/Layaut';
@@ -27,9 +28,12 @@ const QuizeHardLvlScreen = ({navigation}) => {
     useState(false);
   const [compliteLevelModalIsVisible, setCompliteLevelModalIsVisible] =
     useState(false);
+  const [vibroStatus, setVibroStatus] = useState(false);
+  console.log('vibroStatus==>', vibroStatus);
 
   useEffect(() => {
     getData();
+    getVibrationData();
   }, []);
 
   useEffect(() => {
@@ -61,6 +65,19 @@ const QuizeHardLvlScreen = ({navigation}) => {
     }
   };
 
+  const getVibrationData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`Vibration`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setVibroStatus(parsedData.vibroStatus);
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
+
   const levelData = hardLevelQwestions.find(level => level.id === currentLevel);
 
   const levelQuestions = levelData?.questions;
@@ -74,6 +91,12 @@ const QuizeHardLvlScreen = ({navigation}) => {
   const handleAnswer = selectedAnswer => {
     const correctAnswer =
       levelQuestions && levelQuestions[currentQuestionIndex].correctAnswer;
+
+    // Якщо вібрація увімкнена, викликаємо вібрацію
+    if (vibroStatus) {
+      // 100 мс для правильної відповіді, 300 мс для неправильної
+      Vibration.vibrate(isCorrect ? 100 : 300);
+    }
 
     if (selectedAnswer === correctAnswer) {
       setScore(score + 100); // Додаємо 100 балів за правильну відповідь
@@ -189,30 +212,36 @@ const QuizeHardLvlScreen = ({navigation}) => {
         animationType="slide"
         transparent={true}
         visible={compliteLevelModalIsVisible}>
-        <View style={styles.conteinerModalComplite}>
-          <Text style={styles.modalText}>Congrat!</Text>
-          <Text style={styles.modalText}>
-            You have completed Level {currentLevel}. Do you want to proceed to
-            Level {currentLevel + 1}?
-          </Text>
+        <View>
+          <ScrollView>
+            <View style={styles.conteinerModalComplite}>
+              <Text style={styles.modalText}>Congrat!</Text>
+              <Text style={styles.modalText}>
+                You have completed Level {currentLevel}. Do you want to proceed
+                to Level {currentLevel + 1}?
+              </Text>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              width: windowWidth * 0.9,
-              justifyContent: 'space-around',
-            }}>
-            <OperationBtn
-              title="Back"
-              foo={GoBack}
-              castomeStyles={{marginTop: 40, width: 120}}
-            />
-            <OperationBtn
-              title="Ok"
-              foo={CompleteLvlModalClose}
-              castomeStyles={{marginTop: 40, width: 120}}
-            />
-          </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: windowWidth * 0.9,
+                  justifyContent: 'space-around',
+                  paddingBottom: 20,
+                }}>
+                <OperationBtn
+                  title="Back"
+                  foo={GoBack}
+                  castomeStyles={{marginTop: 40, width: 120}}
+                />
+                <OperationBtn
+                  title="Ok"
+                  foo={CompleteLvlModalClose}
+                  castomeStyles={{marginTop: 40, width: 120}}
+                />
+              </View>
+            </View>
+          </ScrollView>
+          <View style={{height: 250}}></View>
         </View>
       </Modal>
 
@@ -263,7 +292,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: windowWidth * 0.8,
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: COLORS.primaryText,
   },

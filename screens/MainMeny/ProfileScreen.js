@@ -23,11 +23,13 @@ const ProfileScreen = ({navigation}) => {
   const [selectAvatar, setSelectAvatar] = useState(null);
   const [prevName, setPrevName] = useState('');
   const [name, setName] = useState('');
-  console.log('prevName==>', prevName);
+  const [score, setScore] = useState(null);
+  console.log('score==>', score);
   console.log('Name==>', name);
 
   useEffect(() => {
     getData();
+    getScoreData();
   }, []);
 
   useEffect(() => {
@@ -60,6 +62,19 @@ const ProfileScreen = ({navigation}) => {
       }
     } catch (e) {
       console.log('Помилка отримання даних:', e);
+    }
+  };
+
+  const getScoreData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`Score`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        setScore(parsedData.score || 0); // Якщо немає балів, ставимо за замовчуванням 0
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+      setScore(0);
     }
   };
 
@@ -148,6 +163,13 @@ const ProfileScreen = ({navigation}) => {
           />
         ) : (
           <></>
+        )}
+
+        {score && (
+          <View style={styles.nameConteiner}>
+            <Text style={{...styles.subtitle, fontSize: 35}}>Score:</Text>
+            <Text style={styles.name}>{score}</Text>
+          </View>
         )}
 
         <OperationBtn

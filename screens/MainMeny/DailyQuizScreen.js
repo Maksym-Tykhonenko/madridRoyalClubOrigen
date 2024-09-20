@@ -6,6 +6,7 @@ import {
   Alert,
   StyleSheet,
   ScrollView,
+  Vibration,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Dimensions} from 'react-native';
@@ -15,6 +16,7 @@ const windowHeight = Dimensions.get('window').height;
 import Layaut from '../../components/Layaut';
 import OperationBtn from '../../components/OperationBtn';
 import OperationModal from '../../components/OperationModal';
+import ModalGoToHardLvl from '../../components/ModalGoToHardLvl';
 import {COLORS} from '../../constants/Colors';
 import {FONTS} from '../../constants/Fonts';
 import {dailyQuizQwe} from '../../data/dailyQuizQwe';
@@ -27,9 +29,13 @@ const DailyQuizScreen = ({navigation}) => {
   console.log('score==>', score);
   const currentQuestion = dailyQuizQwe[currentQuestionIndex];
   const [gameOverModalStatus, setGameOverModalStatus] = useState(false);
+  const [modalGoToHardLvlStatys, setModalGoToHardLvlStatys] = useState(false);
+  const [vibroStatus, setVibroStatus] = useState(false);
+  console.log('vibroStatus==>', vibroStatus);
 
   useEffect(() => {
     getData();
+    getVibrationData();
   }, []);
 
   useEffect(() => {
@@ -63,12 +69,30 @@ const DailyQuizScreen = ({navigation}) => {
     }
   };
 
+  const getVibrationData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`Vibration`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setVibroStatus(parsedData.vibroStatus);
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
+
   const handleAnswer = answerIndex => {
     // Додаємо вибрану відповідь до масиву
     setSelectedOrder([...selectedOrder, answerIndex]);
 
     // Додаємо відповідь до масиву вибраних
     setSelectedAnswers([...selectedAnswers, answerIndex]);
+
+    // Викликаємо вібрацію, якщо вона увімкнена
+    if (vibroStatus) {
+      Vibration.vibrate(100); // Вібрація на 100 мілісекунд
+    }
 
     // Перевіряємо, чи усі відповіді були вибрані
     if (selectedOrder.length + 1 === currentQuestion.correctOrder.length) {
@@ -85,14 +109,15 @@ const DailyQuizScreen = ({navigation}) => {
           setSelectedOrder([]); // Очищаємо вибраний масив для наступного питання
           setSelectedAnswers([]); // Очищаємо вибраний масив відповідей
         } else {
-          Alert.alert(
-            'Вітаємо!',
-            `Ви пройшли всі питання! Ваш результат: ${score + 100} балів`,
-          );
+          setModalGoToHardLvlStatys(true);
+          //Alert.alert(
+          //  'Вітаємо!',
+          //  `Ви пройшли всі питання! Ваш результат: ${score + 100} балів`,
+          //);
           setCurrentQuestionIndex(0); // Почати з початку
           setSelectedOrder([]);
           setSelectedAnswers([]);
-          setScore(0); // Очищаємо бали після завершення
+          //setScore(0); // Очищаємо бали після завершення
         }
       } else {
         //Alert.alert('Невірно', 'Спробуйте ще раз!');
@@ -103,13 +128,15 @@ const DailyQuizScreen = ({navigation}) => {
     }
   };
 
-  const GoBack = () => [
-    navigation.goBack(),
-    //setCurrentQuestionIndex(0),
-    //setSelectedOrder([]),
-    //setSelectedAnswers([]),
-    //setScore(0),
-  ];
+  const GoBack = () => {
+    setGameOverModalStatus(false);
+    navigation.goBack();
+  };
+
+  const goToHardLvl = () => {
+    setModalGoToHardLvlStatys(false);
+    navigation.navigate('HomeMainMenyScreen');
+  };
 
   return (
     <Layaut>
@@ -160,6 +187,11 @@ const DailyQuizScreen = ({navigation}) => {
         modalStatus={gameOverModalStatus}
         supportBtnFoo={GoBack}
       />
+
+      <ModalGoToHardLvl
+        modalStatus={modalGoToHardLvlStatys}
+        supportBtnFoo={goToHardLvl}
+      />
     </Layaut>
   );
 };
@@ -191,11 +223,14 @@ const styles = StyleSheet.create({
   },
   answerButton: {
     width: '90%',
-    padding: 15,
-    borderRadius: 10,
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: COLORS.primaryText,
-    marginBottom: 5,
+    marginBottom: 10,
     backgroundColor: COLORS.primaryTextTransparent,
   },
   selectedAnswerButton: {

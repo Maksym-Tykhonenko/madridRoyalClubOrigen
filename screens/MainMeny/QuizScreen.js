@@ -5,7 +5,7 @@ import {
   View,
   StyleSheet,
   Image,
-  Alert,
+  Vibration,
   Modal,
 } from 'react-native';
 import {Dimensions} from 'react-native';
@@ -32,9 +32,12 @@ const QuizeScreen = ({navigation}) => {
   const [showAnswers, setShowAnswers] = useState(false); // Чи показувати відповіді
   const [score, setScore] = useState(0); // Додаємо стан для збереження балів
   console.log('score==>', score);
+  const [vibroStatus, setVibroStatus] = useState(false);
+  console.log('vibroStatus==>', vibroStatus);
 
   useEffect(() => {
     getData();
+    getVibrationData();
   }, []);
 
   useEffect(() => {
@@ -66,6 +69,19 @@ const QuizeScreen = ({navigation}) => {
     }
   };
 
+  const getVibrationData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`Vibration`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setVibroStatus(parsedData.vibroStatus);
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
+
   const currentQuestion = qwestionFromMadridPiple[currentQuestionIndex];
 
   // Закриття модалки з інструкцією та відкриття модалки з питанням
@@ -82,6 +98,12 @@ const QuizeScreen = ({navigation}) => {
 
   // Функція вибору відповіді
   const handleAnswer = isCorrect => {
+    // Якщо вібрація увімкнена, викликаємо вібрацію
+    if (vibroStatus) {
+      // 100 мс для правильної відповіді, 300 мс для неправильної
+      Vibration.vibrate(isCorrect ? 100 : 300);
+    }
+
     if (isCorrect) {
       setScore(score + 100); // Нарахування балів за правильну відповідь
       if (currentQuestionIndex + 1 < qwestionFromMadridPiple.length) {

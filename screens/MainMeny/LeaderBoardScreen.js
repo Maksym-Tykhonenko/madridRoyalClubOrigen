@@ -96,13 +96,22 @@ const LeaderBoardScreen = ({navigation}) => {
           <View style={{height: 150}}></View>
         </ScrollView>
       </View>
-      <View style={{width: windowWidth, alignItems: 'flex-end'}}>
+
+      <OperationBtn
+        title="Back"
+        castomeStyles={{position: 'absolute', bottom: 5, right: 5}}
+        foo={GoBack}
+      />
+
+      {/**
+       <View style={{width: windowWidth, alignItems: 'flex-end'}}>
         <OperationBtn
           title="Back"
           castomeStyles={{marginBottom: 5, marginRight: 5}}
           foo={GoBack}
         />
       </View>
+       */}
     </Layaut>
   );
 };

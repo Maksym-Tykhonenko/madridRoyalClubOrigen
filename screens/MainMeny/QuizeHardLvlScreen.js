@@ -92,13 +92,14 @@ const QuizeHardLvlScreen = ({navigation}) => {
     const correctAnswer =
       levelQuestions && levelQuestions[currentQuestionIndex].correctAnswer;
 
+    const isCorrect = selectedAnswer === correctAnswer; // Перевірка, чи правильна відповідь
+
     // Якщо вібрація увімкнена, викликаємо вібрацію
     if (vibroStatus) {
-      // 100 мс для правильної відповіді, 300 мс для неправильної
-      Vibration.vibrate(isCorrect ? 100 : 300);
+      Vibration.vibrate(isCorrect ? 100 : 300); // Використовуємо isCorrect
     }
 
-    if (selectedAnswer === correctAnswer) {
+    if (isCorrect) {
       setScore(score + 100); // Додаємо 100 балів за правильну відповідь
 
       if (currentQuestionIndex + 1 < levelQuestions.length) {

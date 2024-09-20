@@ -98,7 +98,6 @@ const QuizeScreen = ({navigation}) => {
 
   // Функція вибору відповіді
   const handleAnswer = isCorrect => {
-    // Якщо вібрація увімкнена, викликаємо вібрацію
     if (vibroStatus) {
       // 100 мс для правильної відповіді, 300 мс для неправильної
       Vibration.vibrate(isCorrect ? 100 : 300);

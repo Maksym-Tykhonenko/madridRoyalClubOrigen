@@ -34,7 +34,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This application uses the Photo Library to select a profile avatar only.</string>
+	<string>This app uses the Photo Library to take a user avatar and photo to store in app private internal data set.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

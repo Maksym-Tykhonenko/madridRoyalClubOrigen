@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: windowHeight,
     alignItems: 'center',
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#383420',
     paddingTop: 50,
   },
   text: {

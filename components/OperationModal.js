@@ -43,7 +43,7 @@ const OperationModal = ({modalStatus, supportBtnFoo}) => {
 
 const styles = StyleSheet.create({
   conteinerModal: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#383420',
     flex: 1,
     marginVertical: '50%',
     marginHorizontal: '5%',

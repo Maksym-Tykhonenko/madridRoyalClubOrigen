@@ -22,67 +22,73 @@ import {FONTS} from './constants/Fonts';
 import * as Progress from 'react-native-progress';
 
 const App = () => {
-  /////////// Louder
+  ///////// Louder
   const [louderIsEnded, setLouderIsEnded] = useState(false);
-  const [prog, setProg] = React.useState(0);
-  const [indeterminate, setIndeterminate] = React.useState(true);
-
   const appearingAnim = useRef(new Animated.Value(0)).current;
+  const appearingSecondAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(appearingAnim, {
       toValue: 1,
-      duration: 6000,
+      duration: 2500,
       useNativeDriver: true,
     }).start();
   }, []);
 
   useEffect(() => {
-    let interval;
-    const timer = setTimeout(() => {
-      setIndeterminate(false);
-      // Увеличиваем прогресс на равные части в зависимости от времени
-      interval = setInterval(() => {
-        setProg(prevProg => Math.min(1, prevProg + 1 / (5500 / 500))); // 7 секунд
-      }, 500); // Інтервал у мілісекундах (0.5 секунди)
-    }, 1500); // Початковий таймер для індетермінованого стану
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
+    setTimeout(() => {
+      Animated.timing(appearingSecondAnim, {
+        toValue: 1,
+        duration: 2500,
+        useNativeDriver: true,
+      }).start();
+      //setLouderIsEnded(true);
+    }, 1500);
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
       setLouderIsEnded(true);
-    }, 8000);
+    }, 4000);
   }, []);
 
   return (
     <NavigationContainer>
       {!louderIsEnded ? (
-        <Layaut>
-          <View style={{flex: 1, alignItems: 'center', paddingBottom: 30}}>
-            <Animated.View
-              style={{...styles.contentConteiner, opacity: appearingAnim}}>
-              <Text style={{...styles.congratText}}>Madrid Royal Club!</Text>
-
-              <Progress.Bar
-                width={200}
-                color="#FFD700"
-                progress={prog}
-                indeterminate={indeterminate}
-              />
-            </Animated.View>
-          </View>
-        </Layaut>
+        <View
+          style={{
+            position: 'relative',
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0)',
+          }}>
+          <Animated.Image
+            source={require('./assets/newDiz/Loader1.png')}
+            style={{
+              //...props.style,
+              opacity: appearingAnim,
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+            }}
+          />
+          <Animated.Image
+            source={require('./assets/newDiz/Loader2.png')}
+            style={{
+              //...props.style,
+              opacity: appearingSecondAnim,
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+            }}
+          />
+        </View>
       ) : (
         <Tab.Navigator
           screenOptions={{
             headerShown: false,
             tabBarShowLabel: false,
-            tabBarActiveBackgroundColor: COLORS.primary,
-            tabBarInactiveBackgroundColor: COLORS.primary,
+            tabBarActiveBackgroundColor: '#000',
+            tabBarInactiveBackgroundColor: '#000',
           }}>
           <Tab.Screen
             name="MainMenyRoute"
@@ -198,3 +204,59 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+{
+  /** const [louderIsEnded, setLouderIsEnded] = useState(false);
+  const [prog, setProg] = React.useState(0);
+  const [indeterminate, setIndeterminate] = React.useState(true);
+
+  const appearingAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(appearingAnim, {
+      toValue: 1,
+      duration: 6000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  useEffect(() => {
+    let interval;
+    const timer = setTimeout(() => {
+      setIndeterminate(false);
+      // Увеличиваем прогресс на равные части в зависимости от времени
+      interval = setInterval(() => {
+        setProg(prevProg => Math.min(1, prevProg + 1 / (5500 / 500))); // 7 секунд
+      }, 500); // Інтервал у мілісекундах (0.5 секунди)
+    }, 1500); // Початковий таймер для індетермінованого стану
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLouderIsEnded(true);
+    }, 8000);
+  }, []);*/
+}
+
+{
+  /**
+    <Layaut>
+          <View style={{flex: 1, alignItems: 'center', paddingBottom: 30}}>
+            <Animated.View
+              style={{...styles.contentConteiner, opacity: appearingAnim}}>
+              <Text style={{...styles.congratText}}>Madrid Royal Club!</Text>
+
+              <Progress.Bar
+                width={200}
+                color="#FFD700"
+                progress={prog}
+                indeterminate={indeterminate}
+              />
+            </Animated.View>
+          </View>
+        </Layaut>
+    */
+}

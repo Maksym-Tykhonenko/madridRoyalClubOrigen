@@ -59,7 +59,7 @@ const ModalGoToHardLvl = ({modalStatus, supportBtnFoo}) => {
 
 const styles = StyleSheet.create({
   conteinerModal: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#383420',
     flex: 1,
     marginVertical: '30%',
     marginHorizontal: '5%',

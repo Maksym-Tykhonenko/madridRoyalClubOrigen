@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: COLORS.primaryText,
     borderRadius: 50,
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#383420',
     color: COLORS.primaryText,
     fontSize: 30,
     fontFamily: 'Starnberg',

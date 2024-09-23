@@ -131,7 +131,7 @@ const ModalWin = ({modalStatus, supportBtnFoo, winBtnFoo}) => {
 
 const styles = StyleSheet.create({
   conteinerModal: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#383420',
     flex: 1,
     marginVertical: '10%',
     marginHorizontal: '5%',
